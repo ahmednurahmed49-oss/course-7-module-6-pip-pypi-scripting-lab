@@ -15,10 +15,22 @@ def fetch_data():
     return {}
 
 
+def generate_log(log_data):
+    """Write a list of log entries to a dated text file."""
+    if not isinstance(log_data, list):
+        raise ValueError("log_data must be a list")
+
+    filename = f"log_{datetime.now().strftime('%Y%m%d')}.txt"
+
+    with open(filename, "w") as file:
+        for entry in log_data:
+            file.write(f"{entry}\n")
+
+    return filename
+
+
 def write_log(post):
     """Write API data and activity logs to a timestamped file."""
-    filename = f"log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-
     log_data = [
         "User logged in",
         "User updated profile",
@@ -27,11 +39,7 @@ def write_log(post):
         f"Fetched Post ID: {post.get('id', 'Unknown')}"
     ]
 
-    with open(filename, "w") as file:
-        for entry in log_data:
-            file.write(f"{entry}\n")
-
-    return filename
+    return generate_log(log_data)
 
 
 def main():
